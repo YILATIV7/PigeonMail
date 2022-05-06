@@ -1,5 +1,8 @@
 package com.vitalytyrenko.pigeonmail;
 
+import com.vitalytyrenko.pigeonmail.microobjects.Pigeon;
+import com.vitalytyrenko.pigeonmail.microobjects.PostPigeon;
+import com.vitalytyrenko.pigeonmail.microobjects.WhitePigeon;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

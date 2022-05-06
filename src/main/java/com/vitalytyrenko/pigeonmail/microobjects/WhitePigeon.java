@@ -1,14 +1,18 @@
-package com.vitalytyrenko.pigeonmail;
+package com.vitalytyrenko.pigeonmail.microobjects;
 
+import com.vitalytyrenko.pigeonmail.MailBox;
+import com.vitalytyrenko.pigeonmail.Sprites;
+import com.vitalytyrenko.pigeonmail.Vector;
+import com.vitalytyrenko.pigeonmail.Visualizable;
 import javafx.scene.image.Image;
 
 public class WhitePigeon extends Pigeon implements Visualizable {
 
-    private double timer = 0;
-    private boolean attachedToMailBox = false;
-    private MailBox mailBox;
+    protected double timer = 0;
+    protected boolean attachedToMailBox = false;
+    protected MailBox mailBox;
 
-    private Vector lastMoveVector;
+    protected Vector lastMoveVector;
 
     public WhitePigeon() {
         super();
@@ -38,7 +42,7 @@ public class WhitePigeon extends Pigeon implements Visualizable {
     }
 
     @Override
-    Image getImage(boolean isSelected) {
+    protected Image getImage(boolean isSelected) {
         return Sprites.getWhitePigeon(isSelected);
     }
 
@@ -50,7 +54,7 @@ public class WhitePigeon extends Pigeon implements Visualizable {
         return attachedToMailBox;
     }
 
-    void attachToMailBox(MailBox mailBox) {
+    public void attachToMailBox(MailBox mailBox) {
         if (mailBox.contains(this)) throw new IllegalStateException();
         setMoveVector(Vector.zero());
         mailBox.add(this);
@@ -59,7 +63,7 @@ public class WhitePigeon extends Pigeon implements Visualizable {
         timer = 5;
     }
 
-    void detachFromMailBox() {
+    public void detachFromMailBox() {
         if (mailBox == null) throw new IllegalStateException();
         setMoveVector(lastMoveVector);
         mailBox.remove(this);
