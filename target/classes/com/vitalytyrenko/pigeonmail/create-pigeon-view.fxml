@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="395.0" prefWidth="512.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.vitalytyrenko.pigeonmail.CreatePigeonController">
+   <TextField fx:id="nameTextField" layoutX="227.0" layoutY="27.0"/>
+   <Label layoutX="129.0" layoutY="27.0" text="Ім'я об'єкту:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <Label layoutX="153.0" layoutY="64.0" text="Позиція:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <TextField layoutX="252.0" layoutY="64.0" prefHeight="25.0" prefWidth="42.0" fx:id="xTextField"/>
+   <Label layoutX="236.0" layoutY="64.0" text="x:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="yTextField" layoutX="334.0" layoutY="64.0" prefHeight="25.0" prefWidth="42.0"/>
+   <Label layoutX="318.0" layoutY="64.0" text="y:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <CheckBox fx:id="randomCoordinatesCheckBox" layoutX="253.0" layoutY="95.0" mnemonicParsing="false"
+             text="обрати випадково"/>
+   <Label layoutX="137.0" layoutY="124.0" text="Напрямок:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="degreesTextField" layoutX="252.0" layoutY="124.0" prefHeight="25.0" prefWidth="42.0"/>
+   <Label layoutX="296.0" layoutY="124.0" prefHeight="25.0" prefWidth="11.0" text="°">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <CheckBox fx:id="randomDegreesCheckBox" layoutX="253.0" layoutY="155.0" mnemonicParsing="false"
+             text="обрати випадково"/>
+   <Label layoutX="185.0" layoutY="185.0" text="Тип:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <Label layoutX="67.0" layoutY="229.0" text="Рівень мікрооб'єкта:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <ChoiceBox fx:id="moveTypeChoiceBox" layoutX="227.0" layoutY="185.0" prefWidth="150.0"/>
+   <RadioButton fx:id="radioButton1" layoutX="227.0" layoutY="233.0" mnemonicParsing="false"
+                text="1 - Звичайний голуб"/>
+   <RadioButton fx:id="radioButton2" layoutX="227.0" layoutY="256.0" mnemonicParsing="false" text="2 - Білий голуб"/>
+   <RadioButton fx:id="radioButton3" layoutX="227.0" layoutY="279.0" mnemonicParsing="false" text="3 - Поштовий голуб"/>
+   <CheckBox fx:id="hasMailCheckBox" layoutX="246.0" layoutY="302.0" mnemonicParsing="false" text="Має листівку?"/>
+   <Button fx:id="applyButton" layoutX="307.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0"
+           prefWidth="71.0" text="Створити"/>
+   <Button fx:id="cancelButton" layoutX="226.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0"
+           prefWidth="71.0" text="Відміна"/>
+</AnchorPane>
