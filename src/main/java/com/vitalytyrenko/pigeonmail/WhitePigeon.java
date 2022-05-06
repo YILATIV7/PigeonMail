@@ -2,15 +2,13 @@ package com.vitalytyrenko.pigeonmail;
 
 import javafx.scene.image.Image;
 
-import java.util.Arrays;
-
 public class WhitePigeon extends Pigeon implements Visualizable {
 
     private double timer = 0;
     private boolean attachedToMailBox = false;
     private MailBox mailBox;
 
-    private double[] lastMoveVector;
+    private Vector lastMoveVector;
 
     public WhitePigeon() {
         super();
@@ -29,10 +27,10 @@ public class WhitePigeon extends Pigeon implements Visualizable {
                         x2 = mailBox.getX() + MailBox.WIDTH / 2.0,
                         y2 = mailBox.getY() + MailBox.HEIGHT / 2.0;
 
-                lastMoveVector = normalize(new double[]{x1 - x2, y1 - y2});
+                lastMoveVector = Vector.normalize(new Vector(x1 - x2, y1 - y2));
                 timer -= dt;
             } else {
-                lastMoveVector = new double[]{getMoveVector()[0], getMoveVector()[1]};
+                lastMoveVector = Vector.copyOf(getMoveVector());
                 super.move(dt);
             }
         }
@@ -54,7 +52,7 @@ public class WhitePigeon extends Pigeon implements Visualizable {
 
     void attachToMailBox(MailBox mailBox) {
         if (mailBox.contains(this)) throw new IllegalStateException();
-        setMoveVector(new double[]{0, 0});
+        setMoveVector(Vector.zero());
         mailBox.add(this);
         this.mailBox = mailBox;
         attachedToMailBox = true;
@@ -82,7 +80,7 @@ public class WhitePigeon extends Pigeon implements Visualizable {
                 y1 = getY() + Pigeon.HEIGHT / 2.0,
                 x2 = mailBox.getX() + MailBox.WIDTH / 2.0,
                 y2 = mailBox.getY() + MailBox.HEIGHT / 2.0;
-        double dx1 = getMoveVector()[0], dy1 = getMoveVector()[1];
+        double dx1 = getMoveVector().x, dy1 = getMoveVector().y;
 
         double dist = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
         double distNext = Math.sqrt(Math.pow(x1 + dx1 - x2, 2) + Math.pow(y1 + dy1 - y2, 2));
@@ -95,18 +93,9 @@ public class WhitePigeon extends Pigeon implements Visualizable {
         return "WhitePigeon{" +
                 "x=" + getX() +
                 ", y=" + getY() +
-                ", moveVector=" + Arrays.toString(getMoveVector()) +
+                ", moveVector=" + getMoveVector() +
                 ", moveType=" + getMoveType() +
                 ", name='" + getName() + '\'' +
                 '}';
-    }
-
-    private static double[] normalize(double[] v) {
-        double len = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
-
-        return new double[]{
-                v[0] / len,
-                v[1] / len
-        };
     }
 }

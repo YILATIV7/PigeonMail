@@ -2,8 +2,6 @@ package com.vitalytyrenko.pigeonmail;
 
 import javafx.scene.image.Image;
 
-import java.util.Arrays;
-
 public class PostPigeon extends WhitePigeon implements Visualizable {
 
     private boolean hasMail;
@@ -41,7 +39,7 @@ public class PostPigeon extends WhitePigeon implements Visualizable {
         return "PostPigeon{" +
                 "x=" + getX() +
                 ", y=" + getY() +
-                ", moveVector=" + Arrays.toString(getMoveVector()) +
+                ", moveVector=" + getMoveVector() +
                 ", moveType=" + getMoveType() +
                 ", name='" + getName() + '\'' +
                 '}';

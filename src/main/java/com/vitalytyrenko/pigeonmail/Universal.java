@@ -235,8 +235,8 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
                 line.setStrokeWidth(2);
                 line.setStartX(pigeon.getX() + Pigeon.WIDTH / 2.0);
                 line.setStartY(pigeon.getY() + Pigeon.HEIGHT / 2.0);
-                line.setEndX(pigeon.getX() + Pigeon.WIDTH / 2.0 + pigeon.getMoveVector()[0] * 40);
-                line.setEndY(pigeon.getY() + Pigeon.HEIGHT / 2.0 + pigeon.getMoveVector()[1] * 40);
+                line.setEndX(pigeon.getX() + Pigeon.WIDTH / 2.0 + pigeon.getMoveVector().x * 40);
+                line.setEndY(pigeon.getY() + Pigeon.HEIGHT / 2.0 + pigeon.getMoveVector().y * 40);
                 objectsContainer.getChildren().add(line);
             }
         }
@@ -244,8 +244,8 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
 
     private void bouncePigeons(Pigeon p1, Pigeon p2) {
         double x1 = p1.getX(), y1 = p1.getY(), x2 = p2.getX(), y2 = p2.getY();
-        double dx1 = p1.getMoveVector()[0], dy1 = p1.getMoveVector()[1];
-        double dx2 = p2.getMoveVector()[0], dy2 = p2.getMoveVector()[1];
+        double dx1 = p1.getMoveVector().x, dy1 = p1.getMoveVector().y;
+        double dx2 = p2.getMoveVector().x, dy2 = p2.getMoveVector().y;
 
         double[] v1 = {dx1, dy1};
         double[] v2 = {dx2, dy2};
@@ -256,16 +256,16 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         double[] pv2 = projection(v2, p2_to_p1Vector);
 
         if (!(p1 instanceof WhitePigeon && ((WhitePigeon) p1).isAttachedToMailBox()))
-            p1.setMoveVector(normalize(new double[]{
+            p1.setMoveVector(Vector.normalize(new Vector(
                     v1[0] + pv2[0] - pv1[0],
-                    v1[1] + pv2[1] - pv1[1],
-            }));
+                    v1[1] + pv2[1] - pv1[1]
+            )));
 
         if (!(p2 instanceof WhitePigeon && ((WhitePigeon) p2).isAttachedToMailBox()))
-            p2.setMoveVector(normalize(new double[]{
+            p2.setMoveVector(Vector.normalize(new Vector(
                     v2[0] + pv1[0] - pv2[0],
                     v2[1] + pv1[1] - pv2[1]
-            }));
+            )));
 
     }
 
@@ -404,15 +404,6 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         return new double[]{
                 projectionLen * p[0] / len,
                 projectionLen * p[1] / len
-        };
-    }
-
-    private static double[] normalize(double[] v) {
-        double len = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
-
-        return new double[]{
-                v[0] / len,
-                v[1] / len
         };
     }
 
