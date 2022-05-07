@@ -1,13 +1,19 @@
 package com.vitalytyrenko.pigeonmail;
 
+import java.util.Arrays;
+
 public class Vector {
 
     public static Vector zero() {
-        return new Vector(0, 0);
+        double[] tmp = new double[2];
+        Arrays.fill(tmp, 0);
+        return new Vector(tmp[0], tmp[1]);
     }
 
     public static Vector copyOf(Vector v) {
-        return new Vector(v.x, v.y);
+        double[] tmp = { v.x, v.y };
+        double[] tmpCopy = Arrays.copyOf(tmp, 2);
+        return new Vector(tmpCopy[0], tmpCopy[1]);
     }
 
     public static Vector normalize(Vector v) {
