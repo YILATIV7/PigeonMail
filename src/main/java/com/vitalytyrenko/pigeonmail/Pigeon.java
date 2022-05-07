@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Objects;
 
-public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
+public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
 
     /*
     MoveType:
@@ -58,7 +58,7 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
         this.y = y;
         this.moveType = moveType;
         this.name = name;
-        setDegrees(degrees);
+        this.moveVector = new Vector(degrees);
 
         imageView = new ImageView();
         imageView.setFitWidth(WIDTH);
@@ -91,10 +91,6 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
     }
 
     // getters-setters
-
-    public void setDegrees(int degrees) {
-        moveVector = new Vector(degrees);
-    }
 
     public Vector getMoveVector() {
         return moveVector;
@@ -282,9 +278,14 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Pigeon pigeon = (Pigeon) super.clone();
-        pigeon.moveVector = Vector.copyOf(moveVector);
+    protected Pigeon clone() throws CloneNotSupportedException {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+        Pigeon pigeon = new Pigeon(getX(), getY(), Vector.degrees(getMoveVector()), getMoveType(), getName());
+        pigeon.setName(pigeon.getName() + "-копія");
         return pigeon;
     }
 }

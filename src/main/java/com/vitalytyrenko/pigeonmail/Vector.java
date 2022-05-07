@@ -22,6 +22,10 @@ public class Vector implements Comparator<Vector> {
         return new Vector(v.x / len, v.y / len);
     }
 
+    public static int degrees(Vector v) {
+        return (int) (Math.atan2(v.y, v.x) * 180 / Math.PI);
+    }
+
     public double x;
     public double y;
 

@@ -144,10 +144,10 @@ public class MailBox implements Iterable<WhitePigeon>, Visualizable {
         pigeonsStr.append("}");
 
         return "MailBox{" +
-                "name='" + name + '\'' +
-                ", x=" + x +
-                ", y=" + y +
-                ", mailCount=" + mailCount +
+                "name='" + getName() + '\'' +
+                ", x=" + getX() +
+                ", y=" + getY() +
+                ", mailCount=" + getMailCount() +
                 ", pigeons=" + pigeonsStr +
                 '}';
     }

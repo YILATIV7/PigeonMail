@@ -2,7 +2,7 @@ package com.vitalytyrenko.pigeonmail;
 
 import javafx.scene.image.Image;
 
-public class WhitePigeon extends Pigeon implements Visualizable {
+public class WhitePigeon extends Pigeon implements Visualizable, Cloneable {
 
     private double timer;
     private boolean attachedToMailBox;
@@ -101,5 +101,11 @@ public class WhitePigeon extends Pigeon implements Visualizable {
                 ", moveType=" + getMoveType() +
                 ", name='" + getName() + '\'' +
                 '}';
+    }
+
+    @Override
+    public WhitePigeon clone() throws CloneNotSupportedException {
+        super.clone();
+        return new WhitePigeon(getX(), getY(), Vector.degrees(getMoveVector()), getMoveType(), getName() + "-копія");
     }
 }

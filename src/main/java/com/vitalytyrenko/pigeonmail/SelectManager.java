@@ -33,6 +33,16 @@ public class SelectManager {
         pigeons.forEach(Pigeon::swapMoveType);
     }
 
+    public void applyClone() {
+        try {
+            for (Pigeon p : pigeons) {
+                Universal.getInstance().bindPigeonToScene(p.clone());
+            }
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void move(double[] vector) {
         boolean canBeMoved = true;
         for (Pigeon p : pigeons) {

@@ -391,10 +391,13 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
                 }
                 invalidateSurfacePosition();
             }
+            case INSERT -> createNewPigeon();
+
             case ESCAPE -> selectManager.cancel();
             case DELETE -> selectManager.applyDelete();
-            case INSERT -> createNewPigeon();
             case F -> selectManager.applySwapMoveType();
+            case C -> selectManager.applyClone();
+            
             case I -> showDebugInfo = !showDebugInfo;
             case SPACE -> isPaused = !isPaused;
             case M -> map.toggleVisible();

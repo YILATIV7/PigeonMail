@@ -2,7 +2,7 @@ package com.vitalytyrenko.pigeonmail;
 
 import javafx.scene.image.Image;
 
-public class PostPigeon extends WhitePigeon implements Visualizable {
+public class PostPigeon extends WhitePigeon implements Visualizable, Cloneable {
 
     private boolean hasMail;
 
@@ -43,5 +43,11 @@ public class PostPigeon extends WhitePigeon implements Visualizable {
                 ", moveType=" + getMoveType() +
                 ", name='" + getName() + '\'' +
                 '}';
+    }
+
+    @Override
+    public PostPigeon clone() throws CloneNotSupportedException {
+        super.clone();
+        return new PostPigeon(getX(), getY(), Vector.degrees(getMoveVector()), getMoveType(), getName() + "-копія", hasMail);
     }
 }
