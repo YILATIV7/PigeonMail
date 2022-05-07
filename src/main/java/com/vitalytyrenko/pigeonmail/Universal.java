@@ -349,7 +349,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         switch (keyEvent.getCode()) {
             case W, UP -> {
                 if (selectManager.hasSelected()) {
-                    selectManager.move(new double[]{0, -moveSpeed});
+                    selectManager.move(new Vector(0, -moveSpeed));
                     if (selectManager.getCenterY() < -surface.getTranslateY() + Universal.HEIGHT + root.getScene().getHeight() / 2.0) {
                         surface.setTranslateY(-selectManager.getCenterY() + root.getScene().getHeight() / 2.0);
                     }
@@ -360,7 +360,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             }
             case A, LEFT -> {
                 if (selectManager.hasSelected()) {
-                    selectManager.move(new double[]{-moveSpeed, 0});
+                    selectManager.move(new Vector(-moveSpeed, 0));
                     if (selectManager.getCenterX() < -surface.getTranslateX() + Universal.WIDTH + root.getScene().getWidth() / 2.0) {
                         surface.setTranslateX(-selectManager.getCenterX() + root.getScene().getWidth() / 2.0);
                     }
@@ -371,7 +371,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             }
             case S, DOWN -> {
                 if (selectManager.hasSelected()) {
-                    selectManager.move(new double[]{0, moveSpeed});
+                    selectManager.move(new Vector(0, moveSpeed));
                     if (selectManager.getCenterY() > -surface.getTranslateY() + root.getScene().getHeight() / 2.0) {
                         surface.setTranslateY(-selectManager.getCenterY() + root.getScene().getHeight() / 2.0);
                     }
@@ -382,7 +382,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             }
             case D, RIGHT -> {
                 if (selectManager.hasSelected()) {
-                    selectManager.move(new double[]{moveSpeed, 0});
+                    selectManager.move(new Vector(moveSpeed, 0));
                     if (selectManager.getCenterX() > -surface.getTranslateX() + root.getScene().getWidth() / 2.0) {
                         surface.setTranslateX(-selectManager.getCenterX() + root.getScene().getWidth() / 2.0);
                     }
@@ -397,7 +397,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case DELETE -> selectManager.applyDelete();
             case F -> selectManager.applySwapMoveType();
             case C -> selectManager.applyClone();
-            
+
             case I -> showDebugInfo = !showDebugInfo;
             case SPACE -> isPaused = !isPaused;
             case M -> map.toggleVisible();
@@ -432,9 +432,17 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             canvas.setOnMouseClicked(event -> {
                 double x = event.getX() - 3;
                 double y = event.getY() - 3;
-                surface.setTranslateX(-Universal.WIDTH * x / 250 + canvas.getScene().getWidth() / 2);
-                surface.setTranslateY(-Universal.HEIGHT * y / 250 + canvas.getScene().getHeight() / 2);
+                double surfaceX = -Universal.WIDTH * x / 250 + canvas.getScene().getWidth() / 2;
+                double surfaceY = -Universal.HEIGHT * y / 250 + canvas.getScene().getHeight() / 2;
+
+                surface.setTranslateX(surfaceX);
+                surface.setTranslateY(surfaceY);
                 invalidateSurfacePosition();
+
+                selectManager.move(new Vector(
+                        -surfaceX + canvas.getScene().getWidth() / 2 - selectManager.getCenterX(),
+                        -surfaceY + canvas.getScene().getHeight() / 2 - selectManager.getCenterY()
+                ));
             });
         }
 

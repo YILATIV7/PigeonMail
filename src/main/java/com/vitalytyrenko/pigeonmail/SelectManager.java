@@ -43,21 +43,37 @@ public class SelectManager {
         }
     }
 
-    public void move(double[] vector) {
-        boolean canBeMoved = true;
+    public void move(Vector vector) {
+        boolean isRightMoving = vector.x > 0,
+                isBottomMoving = vector.y > 0;
+        Vector maxVector = Vector.copyOf(vector);
+
         for (Pigeon p : pigeons) {
-            if (p.getX() + vector[0] < 0 || p.getX() + vector[0] + Pigeon.WIDTH > Universal.WIDTH
-                    || p.getY() + vector[1] < 0 || p.getY() + vector[1] + Pigeon.HEIGHT > Universal.HEIGHT) {
-                canBeMoved = false;
-                break;
+            double pigeonX = p.getX(),
+                    pigeonY = p.getY();
+
+            double x;
+            if (isRightMoving) {
+                x = Universal.WIDTH - Pigeon.WIDTH - pigeonX;
+                if (x < maxVector.x) maxVector.x = x;
+            } else {
+                x = -pigeonX;
+                if (x > maxVector.x) maxVector.x = x;
+            }
+
+            double y;
+            if (isBottomMoving) {
+                y = Universal.HEIGHT - Pigeon.HEIGHT - pigeonY;
+                if (y < maxVector.y) maxVector.y = y;
+            } else {
+                y = -pigeonY;
+                if (y > maxVector.y) maxVector.y = y;
             }
         }
 
-        if (canBeMoved) {
-            for (Pigeon p : pigeons) {
-                p.setX(p.getX() + vector[0]);
-                p.setY(p.getY() + vector[1]);
-            }
+        for (Pigeon p : pigeons) {
+            p.setX(p.getX() + maxVector.x);
+            p.setY(p.getY() + maxVector.y);
         }
     }
 

@@ -13,7 +13,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class MyApplication extends Application {
+public class PigeonMailApplication extends Application {
 
     private Universal universal;
 

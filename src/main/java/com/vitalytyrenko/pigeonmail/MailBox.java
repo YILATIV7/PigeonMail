@@ -129,6 +129,7 @@ public class MailBox implements Iterable<WhitePigeon>, Visualizable {
         this.mailCount--;
     }
 
+    @Override
     public Node getNode() {
         return node;
     }

@@ -150,11 +150,11 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
         return deleted;
     }
 
-    // Методи життєдіяльності об'єкта
-
     public void markDeleted() {
         deleted = true;
     }
+
+    // Методи життєдіяльності об'єкта
 
     public void update(double dt, boolean isPaused) {
         if (!isSelected() && !isPaused) move(dt);
