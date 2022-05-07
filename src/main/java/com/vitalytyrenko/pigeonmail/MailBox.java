@@ -1,7 +1,5 @@
 package com.vitalytyrenko.pigeonmail;
 
-import com.vitalytyrenko.pigeonmail.microobjects.Pigeon;
-import com.vitalytyrenko.pigeonmail.microobjects.WhitePigeon;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

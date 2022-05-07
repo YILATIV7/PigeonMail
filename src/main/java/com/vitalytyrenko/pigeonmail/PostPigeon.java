@@ -1,13 +1,10 @@
-package com.vitalytyrenko.pigeonmail.microobjects;
+package com.vitalytyrenko.pigeonmail;
 
-import com.vitalytyrenko.pigeonmail.Sprites;
-import com.vitalytyrenko.pigeonmail.Universal;
-import com.vitalytyrenko.pigeonmail.Visualizable;
 import javafx.scene.image.Image;
 
 public class PostPigeon extends WhitePigeon implements Visualizable {
 
-    protected boolean hasMail;
+    private boolean hasMail;
 
     public PostPigeon() {
         super();

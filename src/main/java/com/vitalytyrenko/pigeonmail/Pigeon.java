@@ -1,9 +1,5 @@
-package com.vitalytyrenko.pigeonmail.microobjects;
+package com.vitalytyrenko.pigeonmail;
 
-import com.vitalytyrenko.pigeonmail.Sprites;
-import com.vitalytyrenko.pigeonmail.Universal;
-import com.vitalytyrenko.pigeonmail.Vector;
-import com.vitalytyrenko.pigeonmail.Visualizable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -34,16 +30,16 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
 
     public static final String UNNAMED = "безіменний";
 
-    protected boolean selected = false;
-    protected boolean deleted = false;
-    protected double x, y;
-    protected Vector moveVector;  // посилальний тип, для якого потрібно застосувати глибинне копіювання
-    protected int moveType;
-    protected String name;
+    private boolean selected = false;
+    private boolean deleted = false;
+    private double x, y;
+    private Vector moveVector;  // посилальний тип, для якого потрібно застосувати глибинне копіювання
+    private int moveType;
+    private String name;
 
-    protected final Node root;
-    protected final Label label;
-    protected final ImageView imageView;
+    private final Node root;
+    private final Label label;
+    private final ImageView imageView;
 
     public Pigeon(double x, double y, int degrees, int moveType, String name) {
         this.x = x;

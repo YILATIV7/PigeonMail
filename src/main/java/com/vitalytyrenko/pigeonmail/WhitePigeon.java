@@ -1,18 +1,14 @@
-package com.vitalytyrenko.pigeonmail.microobjects;
+package com.vitalytyrenko.pigeonmail;
 
-import com.vitalytyrenko.pigeonmail.MailBox;
-import com.vitalytyrenko.pigeonmail.Sprites;
-import com.vitalytyrenko.pigeonmail.Vector;
-import com.vitalytyrenko.pigeonmail.Visualizable;
 import javafx.scene.image.Image;
 
 public class WhitePigeon extends Pigeon implements Visualizable {
 
-    protected double timer = 0;
-    protected boolean attachedToMailBox = false;
-    protected MailBox mailBox;
+    private double timer = 0;
+    private boolean attachedToMailBox = false;
+    private MailBox mailBox;
 
-    protected Vector lastMoveVector;
+    private Vector lastMoveVector;
 
     public WhitePigeon() {
         super();

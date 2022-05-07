@@ -1,7 +1,5 @@
 package com.vitalytyrenko.pigeonmail;
 
-import com.vitalytyrenko.pigeonmail.microobjects.Pigeon;
-
 import java.util.ArrayList;
 import java.util.List;
 
