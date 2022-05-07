@@ -261,6 +261,11 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
     // Методи суперкласу Object
 
     @Override
+    public boolean equals(Object obj) {
+        return obj == this;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(x, y, name, moveType);
     }
