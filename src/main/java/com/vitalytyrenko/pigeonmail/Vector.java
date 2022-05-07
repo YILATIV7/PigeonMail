@@ -1,8 +1,9 @@
 package com.vitalytyrenko.pigeonmail;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
-public class Vector {
+public class Vector implements Comparator<Vector> {
 
     public static Vector zero() {
         double[] tmp = new double[2];
@@ -39,5 +40,11 @@ public class Vector {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public int compare(Vector o1, Vector o2) {
+        return o1.x == o2.x && o1.y == o2.y ? 0
+                : (o1.x < o2.x && o1.y < o2.y ? -1 : 1);
     }
 }
