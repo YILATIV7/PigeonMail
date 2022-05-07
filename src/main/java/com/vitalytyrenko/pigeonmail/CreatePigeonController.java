@@ -105,30 +105,42 @@ public class CreatePigeonController {
     }
 
     private void onApplyButtonClicked() {
+
+        double x, y;
+        if (!randomCoordinatesCheckBox.isSelected()) {
+            x = Integer.parseInt(xTextField.getText().strip());
+            y = Integer.parseInt(yTextField.getText().strip());
+        } else {
+            x = Universal.RANDOMIZER.nextInt(Universal.WIDTH - Pigeon.WIDTH);
+            y = Universal.RANDOMIZER.nextInt(Universal.HEIGHT - Pigeon.HEIGHT);
+        }
+
+        String name;
+        if (!nameTextField.getText().isBlank()) {
+            name = nameTextField.getText().strip();
+        } else {
+            name = Pigeon.UNNAMED;
+        }
+
+        int degrees;
+        if (!randomDegreesCheckBox.isSelected()) {
+            degrees = Integer.parseInt(degreesTextField.getText().strip());
+        } else {
+            degrees = Universal.RANDOMIZER.nextInt(360);
+        }
+
+        int moveType = choiceBoxItems.indexOf(moveTypeChoiceBox.getValue());
+        boolean hasMail = hasMailCheckBox.isSelected();
+
         Pigeon pigeon;
         Toggle pigeonLevel = toggleGroup.getSelectedToggle();
         if (pigeonLevel == radioButton1) {
-            pigeon = new Pigeon();
+            pigeon = new Pigeon(x, y, degrees, moveType, name);
         } else if (pigeonLevel == radioButton2) {
-            pigeon = new WhitePigeon();
+            pigeon = new WhitePigeon(x, y, degrees, moveType, name);
         } else {
-            pigeon = new PostPigeon();
-            ((PostPigeon) pigeon).setHasMail(hasMailCheckBox.isSelected());
+            pigeon = new PostPigeon(x, y, degrees, moveType, name, hasMail);
         }
-
-        if (!nameTextField.getText().isBlank()) {
-            pigeon.setName(nameTextField.getText().strip());
-        }
-
-        if (!randomCoordinatesCheckBox.isSelected()) {
-            pigeon.setX(Integer.parseInt(xTextField.getText().strip()));
-            pigeon.setY(Integer.parseInt(yTextField.getText().strip()));
-        }
-        if (!randomDegreesCheckBox.isSelected()) {
-            pigeon.setDegrees(Integer.parseInt(degreesTextField.getText().strip()));
-        }
-
-        pigeon.setMoveType(choiceBoxItems.indexOf(moveTypeChoiceBox.getValue()));
         Universal.getInstance().bindPigeonToScene(pigeon);
 
         ((Stage) applyButton.getScene().getWindow()).close();
