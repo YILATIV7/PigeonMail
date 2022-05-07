@@ -4,11 +4,15 @@ import javafx.scene.image.Image;
 
 public class WhitePigeon extends Pigeon implements Visualizable {
 
-    private double timer = 0;
-    private boolean attachedToMailBox = false;
+    private double timer;
+    private boolean attachedToMailBox;
     private MailBox mailBox;
-
     private Vector lastMoveVector;
+
+    {
+        timer = 0;
+        attachedToMailBox = false;
+    }
 
     public WhitePigeon() {
         super();

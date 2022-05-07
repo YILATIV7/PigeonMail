@@ -15,18 +15,28 @@ import java.util.List;
 
 public class MailBox implements Iterable<WhitePigeon>, Visualizable {
 
-    public static final int WIDTH = 127;
-    public static final int HEIGHT = 163;
-    public static final int MAX_CAPACITY = 20;
+    public static final int WIDTH;
+    public static final int HEIGHT;
+    public static final int MAX_CAPACITY;
+
+    static {
+        WIDTH = 127;
+        HEIGHT = 163;
+        MAX_CAPACITY = 20;
+    }
 
     private final String name;
     private final int x, y;
-    private final List<WhitePigeon> pigeons = new ArrayList<>();
-
-    private int mailCount = 0;
-
+    private final List<WhitePigeon> pigeons;
     private final Node node;
     private final Label label;
+
+    private int mailCount;
+
+    {
+        pigeons = new ArrayList<>();
+        mailCount = 0;
+    }
 
     public MailBox(String name, int x, int y) {
         this.name = name;

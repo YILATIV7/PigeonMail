@@ -24,31 +24,42 @@ import java.util.Random;
 
 public class Universal implements EventHandler<KeyEvent>, Visualizable {
 
-    public static final int WIDTH = 3 * 1024;
-    public static final int HEIGHT = 3 * 1024;
-    public static final Random RANDOMIZER = new Random(555);
+    public static final int WIDTH;
+    public static final int HEIGHT;
+    public static final Random RANDOMIZER;
 
-    private static final Universal instance = new Universal();
+    private static final Universal INSTANCE;
 
-    public static Universal getInstance() {
-        return instance;
+    static {
+        WIDTH = 3 * 1024;
+        HEIGHT = 3 * 1024;
+        RANDOMIZER = new Random(555);
+        INSTANCE = new Universal();
     }
 
-    private final List<Pigeon> freePigeons = new ArrayList<>();
-    private final List<MailBox> mailBoxes = new ArrayList<>();
+    public static Universal getInstance() {
+        return INSTANCE;
+    }
 
+    private final List<Pigeon> freePigeons;
+    private final List<MailBox> mailBoxes;
     private final AnchorPane root;
     private final AnchorPane surface;
     private final AnchorPane objectsContainer;
-
-    private boolean showDebugInfo = false;
-    private boolean isPaused = false;
-
     private final SelectManager selectManager;
+    private final Map map;
 
+    private boolean showDebugInfo;
+    private boolean isPaused;
     private Stage createPigeonStage;
 
-    private final Map map = new Map();
+    {
+        freePigeons = new ArrayList<>();
+        mailBoxes = new ArrayList<>();
+        map = new Map();
+        showDebugInfo = false;
+        isPaused = false;
+    }
 
     private Universal() {
         selectManager = new SelectManager();

@@ -23,15 +23,22 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
         1 - режим "екстра" - голуб червоніє і починає поїдати тих, з якими стикається
      */
 
-    public static final int WIDTH = 75;
-    public static final int HEIGHT = 75;
-    public static final int MOVE_TYPE_STANDARD = 0;
-    public static final int MOVE_TYPE_CUSTOM = 1;
+    public static final int WIDTH;
+    public static final int HEIGHT;
+    public static final int MOVE_TYPE_STANDARD;
+    public static final int MOVE_TYPE_CUSTOM;
+    public static final String UNNAMED;
 
-    public static final String UNNAMED = "безіменний";
+    static {
+        WIDTH = 75;
+        HEIGHT = 75;
+        MOVE_TYPE_STANDARD = 0;
+        MOVE_TYPE_CUSTOM = 1;
+        UNNAMED = "безіменний";
+    }
 
-    private boolean selected = false;
-    private boolean deleted = false;
+    private boolean selected;
+    private boolean deleted;
     private double x, y;
     private Vector moveVector;  // посилальний тип, для якого потрібно застосувати глибинне копіювання
     private int moveType;
@@ -40,6 +47,11 @@ public class Pigeon implements Comparable<Pigeon>, Cloneable, Visualizable {
     private final Node root;
     private final Label label;
     private final ImageView imageView;
+
+    {
+        selected = false;
+        deleted = false;
+    }
 
     public Pigeon(double x, double y, int degrees, int moveType, String name) {
         this.x = x;
