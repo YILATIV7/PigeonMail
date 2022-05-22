@@ -68,7 +68,7 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
         label.setPadding(new Insets(0, 5, 0, 5));
         label.setText(name);
 
-        Rectangle rect = new Rectangle(0, 0, Color.WHITE);
+        Rectangle rect = new Rectangle(0, 0, Color.AQUA);
         label.widthProperty().addListener((v, t1, t12) -> {
             double posX = (Pigeon.WIDTH - label.getWidth()) / 2.0;
             rect.setWidth(label.getWidth());

@@ -105,7 +105,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         label.setFont(new Font(42));
         label.setPadding(new Insets(0, 20, 0, 20));
 
-        Rectangle rect = new Rectangle(0, 0, Color.WHITE);
+        Rectangle rect = new Rectangle(0, 0, Color.MEDIUMAQUAMARINE);
         label.widthProperty().addListener((v, t1, t12) -> rect.setWidth(label.getWidth()));
         label.heightProperty().addListener((v, t1, t2) -> rect.setHeight(label.getHeight()));
 
