@@ -413,10 +413,15 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     }
 
     private void load() {
+        boolean savedPauseState = isPaused;
         isPaused = true;
+
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-        if (file == null) return;
+        if (file == null) {
+            isPaused = false;
+            return;
+        }
 
         try {
             FileInputStream fis = new FileInputStream(file);
@@ -442,19 +447,43 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             alert.showAndWait();
         }
 
-        isPaused = false;
+        isPaused = savedPauseState;
     }
 
     private void save() {
+        boolean savedPauseState = isPaused;
+        isPaused = true;
+
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showSaveDialog(root.getScene().getWindow());
+        if (file == null) {
+            isPaused = false;
+            return;
+        }
+
         try {
-            FileOutputStream fos = new FileOutputStream("C:\\f.txt");
+            FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(freePigeons);
             oos.writeObject(mailBoxes);
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Успіх");
+            alert.setContentText("Файл успішно збережено!");
+            alert.setHeaderText(null);
+            alert.setGraphic(new ImageView(Sprites.getSuccess()));
+            alert.showAndWait();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Помилка");
+            alert.setContentText("Не вдалося зберегти файл!");
+            alert.setHeaderText(null);
+            alert.setGraphic(new ImageView(Sprites.getFailure()));
+            alert.showAndWait();
         }
+
+        isPaused = savedPauseState;
     }
 
     private void bindAllToScene() {
