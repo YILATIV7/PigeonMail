@@ -9,11 +9,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MailBox implements Iterable<WhitePigeon>, Visualizable {
+public class MailBox implements Iterable<WhitePigeon>, Visualizable, Serializable {
 
     public static final int WIDTH;
     public static final int HEIGHT;
@@ -28,8 +29,8 @@ public class MailBox implements Iterable<WhitePigeon>, Visualizable {
     private final String name;
     private final int x, y;
     private final List<WhitePigeon> pigeons;
-    private final Node node;
-    private final Label label;
+    private transient Node node;
+    private transient Label label;
 
     private int mailCount;
 
@@ -42,7 +43,10 @@ public class MailBox implements Iterable<WhitePigeon>, Visualizable {
         this.name = name;
         this.x = x;
         this.y = y;
+        initFX();
+    }
 
+    private void initFX() {
         ImageView imageView = new ImageView(Sprites.getMailbox(false));
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
@@ -169,5 +173,16 @@ public class MailBox implements Iterable<WhitePigeon>, Visualizable {
                 return pigeons.get(i++);
             }
         };
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        initFX();
     }
 }

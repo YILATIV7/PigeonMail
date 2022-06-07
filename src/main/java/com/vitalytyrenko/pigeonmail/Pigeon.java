@@ -13,9 +13,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.io.*;
 import java.util.Objects;
 
-public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
+public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Serializable {
 
     /*
     MoveType:
@@ -44,9 +45,9 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
     private int moveType;
     private String name;
 
-    private final Node root;
-    private final Label label;
-    private final ImageView imageView;
+    private transient Node root;
+    private transient Label label;
+    private transient ImageView imageView;
 
     {
         selected = false;
@@ -59,7 +60,10 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
         this.moveType = moveType;
         this.name = name;
         this.moveVector = new Vector(degrees);
+        initFX();
+    }
 
+    private void initFX() {
         imageView = new ImageView();
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
@@ -287,5 +291,15 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable {
         Pigeon pigeon = new Pigeon(getX(), getY(), Vector.degrees(getMoveVector()), getMoveType(), getName());
         pigeon.setName(pigeon.getName() + "-копія");
         return pigeon;
+    }
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.defaultWriteObject();
+    }
+
+    // Custom deserialization logic will allow us to have additional deserialization logic on top of the default one e.g. decrypting object after deserialization
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        initFX();
     }
 }

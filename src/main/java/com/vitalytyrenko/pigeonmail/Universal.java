@@ -18,6 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -67,9 +68,10 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         mailBoxes.add(new MailBox("Макрооб'єкт-1"));
         mailBoxes.add(new MailBox("Макрооб'єкт-2"));
         mailBoxes.add(new MailBox("Макрооб'єкт-3"));
+
         objectsContainer = new AnchorPane(mailBoxes.stream().map(MailBox::getNode).toList().toArray(new Node[0]));
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 100; i++) {
             Pigeon p = null;
             int level = RANDOMIZER.nextInt(3);
 
@@ -401,6 +403,68 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case I -> showDebugInfo = !showDebugInfo;
             case SPACE -> isPaused = !isPaused;
             case M -> map.toggleVisible();
+
+            case F11 -> load();
+            case F12 -> save();
+        }
+    }
+
+    private void load() {
+        try {
+            FileInputStream fis = new FileInputStream("C:\\f.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            unbindAllFromScene();
+            this.freePigeons.addAll((List<Pigeon>) ois.readObject());
+            this.mailBoxes.addAll((List<MailBox>) ois.readObject());
+            bindAllToScene();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void save() {
+        try {
+            FileOutputStream fos = new FileOutputStream("C:\\f.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(freePigeons);
+            oos.writeObject(mailBoxes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void bindAllToScene() {
+        for (Pigeon pigeon : freePigeons) {
+            objectsContainer.getChildren().add(pigeon.getNode());
+            pigeon.getNode().setOnMouseClicked(e -> onMouseClickedOnPigeon(pigeon));
+        }
+
+        for (MailBox mailBox : mailBoxes) {
+            for (WhitePigeon pigeon : mailBox) {
+                objectsContainer.getChildren().add(pigeon.getNode());
+                pigeon.getNode().setOnMouseClicked(e -> onMouseClickedOnPigeon(pigeon));
+            }
+            objectsContainer.getChildren().add(mailBox.getNode());
+        }
+    }
+
+    private void unbindAllFromScene() {
+        while (freePigeons.size() > 0) {
+            objectsContainer.getChildren().remove(freePigeons.get(0).getNode());
+            freePigeons.remove(0);
+        }
+
+        while (mailBoxes.size() > 0) {
+            MailBox mailBox = mailBoxes.get(0);
+            while (mailBox.size() > 0) {
+                objectsContainer.getChildren().remove(mailBox.get(0).getNode());
+                mailBox.remove(0);
+            }
+
+            objectsContainer.getChildren().remove(mailBox.getNode());
+            mailBoxes.remove(0);
         }
     }
 

@@ -1,9 +1,10 @@
 package com.vitalytyrenko.pigeonmail;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class Vector implements Comparator<Vector> {
+public class Vector implements Comparator<Vector>, Serializable {
 
     public static Vector zero() {
         double[] tmp = new double[2];
