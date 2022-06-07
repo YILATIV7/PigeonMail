@@ -6,7 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -410,17 +413,36 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     }
 
     private void load() {
+        isPaused = true;
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if (file == null) return;
+
         try {
-            FileInputStream fis = new FileInputStream("C:\\f.txt");
+            FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
             unbindAllFromScene();
             this.freePigeons.addAll((List<Pigeon>) ois.readObject());
             this.mailBoxes.addAll((List<MailBox>) ois.readObject());
             bindAllToScene();
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Успіх");
+            alert.setContentText("Файл успішно завантажено!");
+            alert.setHeaderText(null);
+            alert.setGraphic(new ImageView(Sprites.getSuccess()));
+            alert.showAndWait();
+
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Помилка");
+            alert.setContentText("Не вдалося завантажити файл!");
+            alert.setHeaderText(null);
+            alert.setGraphic(new ImageView(Sprites.getFailure()));
+            alert.showAndWait();
         }
+
+        isPaused = false;
     }
 
     private void save() {

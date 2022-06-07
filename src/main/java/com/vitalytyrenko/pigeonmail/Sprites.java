@@ -19,6 +19,8 @@ public class Sprites {
     private static final Image POST_PIGEON_WITH_MAIL_SELECTED;
     private static final Image POST_PIGEON_WITHOUT_MAIL;
     private static final Image POST_PIGEON_WITHOUT_MAIL_SELECTED;
+    private static final Image SUCCESS;
+    private static final Image FAILURE;
 
     static {
         try {
@@ -34,6 +36,8 @@ public class Sprites {
             POST_PIGEON_WITH_MAIL_SELECTED = from("post-pigeon-with-mail-selected.png");
             POST_PIGEON_WITHOUT_MAIL = from("post-pigeon-without-mail.png");
             POST_PIGEON_WITHOUT_MAIL_SELECTED = from("post-pigeon-without-mail-selected.png");
+            SUCCESS = from("success.png");
+            FAILURE = from("failure.png");
 
         } catch (FileNotFoundException e) {
             throw new IllegalStateException(e);
@@ -65,6 +69,14 @@ public class Sprites {
             return isSelected ? POST_PIGEON_WITH_MAIL_SELECTED : POST_PIGEON_WITH_MAIL;
         else
             return isSelected ? POST_PIGEON_WITHOUT_MAIL_SELECTED : POST_PIGEON_WITHOUT_MAIL;
+    }
+
+    public static Image getSuccess() {
+        return SUCCESS;
+    }
+
+    public static Image getFailure() {
+        return FAILURE;
     }
 
     private static Image from(String path) throws FileNotFoundException {
