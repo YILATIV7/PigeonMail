@@ -417,6 +417,11 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         isPaused = true;
 
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Файли ГолубПошти", "*.bin"),
+                new FileChooser.ExtensionFilter("Усі файли", "*.*")
+        );
+
         File file = fileChooser.showOpenDialog(root.getScene().getWindow());
         if (file == null) {
             isPaused = false;
@@ -455,6 +460,11 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         isPaused = true;
 
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Файли ГолубПошти", "*.bin"),
+                new FileChooser.ExtensionFilter("Усі файли", "*.*")
+        );
+
         File file = fileChooser.showSaveDialog(root.getScene().getWindow());
         if (file == null) {
             isPaused = false;
