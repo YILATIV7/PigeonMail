@@ -8,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -352,7 +351,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         final int moveSpeed = 10;
 
         switch (keyEvent.getCode()) {
-            case W, UP -> {
+            case UP -> {
                 if (selectManager.hasSelected()) {
                     selectManager.move(new Vector(0, -moveSpeed));
                     if (selectManager.getCenterY() < -surface.getTranslateY() + Universal.HEIGHT + root.getScene().getHeight() / 2.0) {
@@ -363,7 +362,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
                 }
                 invalidateSurfacePosition();
             }
-            case A, LEFT -> {
+            case LEFT -> {
                 if (selectManager.hasSelected()) {
                     selectManager.move(new Vector(-moveSpeed, 0));
                     if (selectManager.getCenterX() < -surface.getTranslateX() + Universal.WIDTH + root.getScene().getWidth() / 2.0) {
@@ -374,7 +373,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
                 }
                 invalidateSurfacePosition();
             }
-            case S, DOWN -> {
+            case DOWN -> {
                 if (selectManager.hasSelected()) {
                     selectManager.move(new Vector(0, moveSpeed));
                     if (selectManager.getCenterY() > -surface.getTranslateY() + root.getScene().getHeight() / 2.0) {
@@ -385,7 +384,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
                 }
                 invalidateSurfacePosition();
             }
-            case D, RIGHT -> {
+            case RIGHT -> {
                 if (selectManager.hasSelected()) {
                     selectManager.move(new Vector(moveSpeed, 0));
                     if (selectManager.getCenterX() > -surface.getTranslateX() + root.getScene().getWidth() / 2.0) {
@@ -407,8 +406,12 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case SPACE -> isPaused = !isPaused;
             case M -> map.toggleVisible();
 
-            case F11 -> load();
-            case F12 -> save();
+            case O -> {
+                if (keyEvent.isControlDown()) load();
+            }
+            case S -> {
+                if (keyEvent.isControlDown()) save();
+            }
         }
     }
 
