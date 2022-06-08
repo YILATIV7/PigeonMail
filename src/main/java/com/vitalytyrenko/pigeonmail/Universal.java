@@ -497,17 +497,18 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     }
 
     private void bindAllToScene() {
-        for (Pigeon pigeon : freePigeons) {
-            objectsContainer.getChildren().add(pigeon.getNode());
-            pigeon.getNode().setOnMouseClicked(e -> onMouseClickedOnPigeon(pigeon));
-        }
-
         for (MailBox mailBox : mailBoxes) {
+            objectsContainer.getChildren().add(mailBox.getNode());
+
             for (WhitePigeon pigeon : mailBox) {
                 objectsContainer.getChildren().add(pigeon.getNode());
                 pigeon.getNode().setOnMouseClicked(e -> onMouseClickedOnPigeon(pigeon));
             }
-            objectsContainer.getChildren().add(mailBox.getNode());
+        }
+
+        for (Pigeon pigeon : freePigeons) {
+            objectsContainer.getChildren().add(pigeon.getNode());
+            pigeon.getNode().setOnMouseClicked(e -> onMouseClickedOnPigeon(pigeon));
         }
     }
 
