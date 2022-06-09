@@ -73,7 +73,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
 
         objectsContainer = new AnchorPane(mailBoxes.stream().map(MailBox::getNode).toList().toArray(new Node[0]));
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             Pigeon p = null;
             int level = RANDOMIZER.nextInt(3);
 
