@@ -412,7 +412,21 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case S -> {
                 if (keyEvent.isControlDown()) save();
             }
+            case A -> {
+                if (keyEvent.isControlDown()) selectAll();
+            }
         }
+    }
+
+    private void selectAll() {
+        freePigeons.forEach(pigeon -> {
+            pigeon.setSelected(true);
+            selectManager.add(pigeon);
+        });
+        mailBoxes.forEach(mailBox -> mailBox.forEach(pigeon -> {
+            pigeon.setSelected(true);
+            selectManager.add(pigeon);
+        }));
     }
 
     private void load() {

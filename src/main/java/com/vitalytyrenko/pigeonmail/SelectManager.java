@@ -12,7 +12,7 @@ public class SelectManager {
     }
 
     public void add(Pigeon p) {
-        pigeons.add(p);
+        if (!pigeons.contains(p)) pigeons.add(p);
     }
 
     public void remove(Pigeon p) {
