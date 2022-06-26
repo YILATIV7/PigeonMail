@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Serializable {
@@ -44,6 +46,8 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
     private Vector moveVector;  // посилальний тип, для якого потрібно застосувати глибинне копіювання
     private int moveType;
     private String name;
+    private Rectangle rect;
+    private boolean isCapitan = false;
 
     private transient Node root;
     private transient Label label;
@@ -63,6 +67,15 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
         initFX();
     }
 
+    public boolean isCapitan() {
+        return isCapitan;
+    }
+
+    public void setCapitan(boolean capitan) {
+        isCapitan = capitan;
+        setName("КАПІТАН");
+    }
+
     private void initFX() {
         imageView = new ImageView();
         imageView.setFitWidth(WIDTH);
@@ -72,7 +85,7 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
         label.setPadding(new Insets(0, 5, 0, 5));
         label.setText(name);
 
-        Rectangle rect = new Rectangle(0, 0, Color.AQUA);
+        rect = new Rectangle(0, 0, Color.AQUA);
         label.widthProperty().addListener((v, t1, t12) -> {
             double posX = (Pigeon.WIDTH - label.getWidth()) / 2.0;
             rect.setWidth(label.getWidth());
@@ -165,11 +178,42 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
         render();
     }
 
+    boolean isOnPosition = false;
     public void move(double dt) {
-        int speed = 100;
-        x += dt * speed * moveVector.x;
-        y += dt * speed * moveVector.y;
-        invalidatePosition();
+        if (Universal.getInstance().capitanModeEnabled && !isOnPosition) {
+            Pigeon capitan;
+            List<Pigeon> command;
+
+            if (this instanceof PostPigeon) {
+                capitan = Universal.getInstance().capitan3;
+                command = Universal.getInstance().command3;
+            } else if (this instanceof WhitePigeon) {
+                capitan = Universal.getInstance().capitan2;
+                command = Universal.getInstance().command2;
+            } else {
+                capitan = Universal.getInstance().capitan1;
+                command = Universal.getInstance().command1;
+            }
+
+            Vector vector = new Vector(
+                    (capitan.getX() + (command.size() + 1) * 75) - getX(),
+                    capitan.getY() - getY()
+            );
+            moveVector = Vector.normalize(vector);
+
+            if (Math.abs((capitan.getX() + (command.size() + 1) * 75) - getX()) < 1
+                && Math.abs(capitan.getY() - getY()) < 1) {
+                command.add(this);
+                isOnPosition = true;
+            }
+        }
+
+        if (!isCapitan && !isOnPosition) {
+            int speed = 100;
+            x += dt * speed * moveVector.x;
+            y += dt * speed * moveVector.y;
+            invalidatePosition();
+        }
     }
 
     public void render() {
@@ -202,7 +246,20 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
                 )
         );
 
+        Blend capitanBlush = new Blend(
+                BlendMode.MULTIPLY,
+                monochrome,
+                new ColorInput(
+                        0,
+                        0,
+                        WIDTH,
+                        HEIGHT,
+                        Color.YELLOW
+                )
+        );
+
         imageView.setEffect(moveType == MOVE_TYPE_CUSTOM ? blush : null);
+        imageView.setEffect(isCapitan ? capitanBlush : null);
     }
 
     public void invalidatePosition() {

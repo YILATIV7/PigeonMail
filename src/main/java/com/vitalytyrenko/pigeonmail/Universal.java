@@ -1,13 +1,18 @@
 package com.vitalytyrenko.pigeonmail;
 
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -55,6 +60,14 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     private boolean showDebugInfo;
     private boolean isPaused;
     private Stage createPigeonStage;
+
+    public boolean capitanModeEnabled = false;
+    public Pigeon capitan1;
+    public WhitePigeon capitan2;
+    public PostPigeon capitan3;
+    public List<Pigeon> command1 = new ArrayList<>();
+    public List<Pigeon> command2 = new ArrayList<>();
+    public List<Pigeon> command3 = new ArrayList<>();
 
     {
         freePigeons = new ArrayList<>();
@@ -131,7 +144,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         freePigeons.forEach(pigeon -> pigeon.update(dt, isPaused));
         mailBoxes.forEach(mailBoxes -> mailBoxes.update(dt, isPaused));
 
-        if (!isPaused) {
+        if (!isPaused && !capitanModeEnabled) {
             // micro-interaction
             for (Pigeon p1 : getAllPigeons()) {
                 for (Pigeon p2 : getAllPigeons()) {
@@ -193,32 +206,34 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         // attaching and detaching pigeons to mailboxes
         mailBoxes.forEach(mailBox -> {
             // attach pigeons to mailboxes
-            for (int i = 0; i < freePigeons.size(); ) {
-                if (freePigeons.get(i).isSelected()) {
-                    if (freePigeons.get(i) instanceof WhitePigeon pigeon && pigeon.nearTo(mailBox)) {
-                        pigeon.attachToMailBox(mailBox);
-                        freePigeons.remove(i);
-                    } else i++;
-                } else {
-                    if (freePigeons.get(i) instanceof WhitePigeon pigeon && pigeon.nearTo(mailBox) && pigeon.approachTo(mailBox)) {
-                        if (pigeon instanceof PostPigeon postPigeon) {
-                            if (postPigeon.isHasMail()) {
-                                if (mailBox.getMailCount() < MailBox.MAX_CAPACITY) {
-                                    mailBox.putMail();
-                                    postPigeon.setHasMail(false);
-                                }
-                            } else {
-                                if (mailBox.getMailCount() > 0) {
-                                    mailBox.getMail();
-                                    postPigeon.setHasMail(true);
+            if (!capitanModeEnabled) {
+                for (int i = 0; i < freePigeons.size(); ) {
+                    if (freePigeons.get(i).isSelected()) {
+                        if (freePigeons.get(i) instanceof WhitePigeon pigeon && pigeon.nearTo(mailBox)) {
+                            pigeon.attachToMailBox(mailBox);
+                            freePigeons.remove(i);
+                        } else i++;
+                    } else {
+                        if (freePigeons.get(i) instanceof WhitePigeon pigeon && pigeon.nearTo(mailBox) && pigeon.approachTo(mailBox)) {
+                            if (pigeon instanceof PostPigeon postPigeon) {
+                                if (postPigeon.isHasMail()) {
+                                    if (mailBox.getMailCount() < MailBox.MAX_CAPACITY) {
+                                        mailBox.putMail();
+                                        postPigeon.setHasMail(false);
+                                    }
+                                } else {
+                                    if (mailBox.getMailCount() > 0) {
+                                        mailBox.getMail();
+                                        postPigeon.setHasMail(true);
+                                    }
                                 }
                             }
-                        }
 
-                        pigeon.attachToMailBox(mailBox);
-                        freePigeons.remove(i);
+                            pigeon.attachToMailBox(mailBox);
+                            freePigeons.remove(i);
 
-                    } else i++;
+                        } else i++;
+                    }
                 }
             }
             // detach pigeons from mailboxes
@@ -415,7 +430,77 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case A -> {
                 if (keyEvent.isControlDown()) selectAll();
             }
+            case K -> {
+                chooseCapitan();
+            }
         }
+    }
+
+    private void chooseCapitan() {
+
+        List<Pigeon> allPigeons = new ArrayList<>();
+        List<WhitePigeon> allWhitePigeons = new ArrayList<>();
+        List<PostPigeon> allPostPigeons = new ArrayList<>();
+
+        for (Pigeon p : getAllPigeons()) {
+            if (p instanceof PostPigeon) {
+                allPostPigeons.add((PostPigeon) p);
+            } else if (p instanceof WhitePigeon) {
+                allWhitePigeons.add((WhitePigeon) p);
+            } else {
+                allPigeons.add(p);
+            }
+        }
+
+        ListView<Pigeon> list1 = new ListView<>();
+        list1.setItems(FXCollections.observableList(allPigeons));
+        list1.setPrefWidth(300);
+
+        ListView<WhitePigeon> list2 = new ListView<>();
+        list2.setItems(FXCollections.observableList(allWhitePigeons));
+        list2.setPrefWidth(300);
+
+        ListView<PostPigeon> list3 = new ListView<>();
+        list3.setItems(FXCollections.observableList(allPostPigeons));
+        list3.setPrefWidth(300);
+
+        Stage stage = new Stage();
+
+        final int[] indexes = {-1, -1, -1};
+        Button okButton = new Button("OK");
+        okButton.setOnAction(actionEvent -> {
+            indexes[0] = list1.getSelectionModel().getSelectedIndex();
+            indexes[1] = list2.getSelectionModel().getSelectedIndex();
+            indexes[2] = list3.getSelectionModel().getSelectedIndex();
+            stage.close();
+        });
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(actionEvent -> stage.close());
+
+        HBox lists = new HBox(list1, list2, list3);
+        HBox buttons = new HBox(okButton, cancelButton);
+        VBox root = new VBox(lists, buttons);
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Choose capitans");
+
+        isPaused = true;
+        stage.showAndWait();
+        isPaused = false;
+
+        if (indexes[0] == -1 || indexes[1] == -1 || indexes[2] == -1) return;
+
+        capitan1 = allPigeons.get(indexes[0]);
+        capitan1.setCapitan(true);
+
+        capitan2 = allWhitePigeons.get(indexes[1]);
+        capitan2.setCapitan(true);
+
+        capitan3 = allPostPigeons.get(indexes[2]);
+        capitan3.setCapitan(true);
+
+        capitanModeEnabled = true;
     }
 
     private void selectAll() {
@@ -615,6 +700,7 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
 
             for (Pigeon pigeon : getAllPigeons()) {
                 ctx.setFill(pigeon.getMoveType() == Pigeon.MOVE_TYPE_CUSTOM ? Color.RED : Color.GRAY);
+                if (pigeon.isCapitan()) ctx.setFill(Color.YELLOW);
                 ctx.fillRect(
                         3 + 250 * pigeon.getX() / Universal.WIDTH,
                         3 + 250 * pigeon.getY() / Universal.HEIGHT,
