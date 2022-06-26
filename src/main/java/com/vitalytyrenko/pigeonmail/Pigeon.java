@@ -1,5 +1,6 @@
 package com.vitalytyrenko.pigeonmail;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -73,7 +74,7 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
 
     public void setCapitan(boolean capitan) {
         isCapitan = capitan;
-        setName("КАПІТАН");
+        setName("КАПІТАН 1");
     }
 
     private void initFX() {
@@ -178,33 +179,59 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
         render();
     }
 
-    boolean isOnPosition = false;
+    private boolean isOnPosition = false;
+
+    public boolean isOnPosition() {
+        return isOnPosition;
+    }
+
     public void move(double dt) {
         if (Universal.getInstance().capitanModeEnabled && !isOnPosition) {
             Pigeon capitan;
             List<Pigeon> command;
+            IntegerProperty littleSpace;
 
             if (this instanceof PostPigeon) {
                 capitan = Universal.getInstance().capitan3;
                 command = Universal.getInstance().command3;
+                littleSpace = Universal.getInstance().littleSpace3;
+
             } else if (this instanceof WhitePigeon) {
                 capitan = Universal.getInstance().capitan2;
                 command = Universal.getInstance().command2;
+                littleSpace = Universal.getInstance().littleSpace2;
+
             } else {
                 capitan = Universal.getInstance().capitan1;
                 command = Universal.getInstance().command1;
+                littleSpace = Universal.getInstance().littleSpace1;
+            }
+
+            double targetX, targetY = capitan.getY();
+            if (littleSpace.get() == -1) {
+                targetX = (capitan.getX() + (command.size() + 1) * 75);
+            } else {
+                targetX = (capitan.getX() - (littleSpace.get() + 1) * 75);
             }
 
             Vector vector = new Vector(
-                    (capitan.getX() + (command.size() + 1) * 75) - getX(),
-                    capitan.getY() - getY()
+                    targetX - getX(),
+                    targetY - getY()
             );
             moveVector = Vector.normalize(vector);
 
-            if (Math.abs((capitan.getX() + (command.size() + 1) * 75) - getX()) < 1
-                && Math.abs(capitan.getY() - getY()) < 1) {
+            if (Math.abs(targetX - getX()) < 1 && Math.abs(targetY - getY()) < 1) {
                 command.add(this);
                 isOnPosition = true;
+                Universal.getInstance().checkIfAllPigeonsOnPosition();
+
+                if (littleSpace.get() == -1) {
+                    if ((capitan.getX() + (command.size() + 1) * 75) >= Universal.WIDTH - 80) {
+                        littleSpace.set(0);
+                    }
+                } else {
+                    littleSpace.set(littleSpace.get() + 1);
+                }
             }
         }
 

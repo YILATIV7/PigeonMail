@@ -6,6 +6,11 @@ public class PostPigeon extends WhitePigeon implements Visualizable, Cloneable {
 
     private boolean hasMail;
 
+    public void setCapitan(boolean capitan) {
+        super.setCapitan(capitan);
+        setName("КАПІТАН 3");
+    }
+
     public PostPigeon() {
         super();
         hasMail = Universal.RANDOMIZER.nextBoolean();

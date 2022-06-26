@@ -1,5 +1,7 @@
 package com.vitalytyrenko.pigeonmail;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,10 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -68,6 +67,34 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     public List<Pigeon> command1 = new ArrayList<>();
     public List<Pigeon> command2 = new ArrayList<>();
     public List<Pigeon> command3 = new ArrayList<>();
+    public IntegerProperty littleSpace1 = new SimpleIntegerProperty(-1);
+    public IntegerProperty littleSpace2 = new SimpleIntegerProperty(-1);
+    public IntegerProperty littleSpace3 = new SimpleIntegerProperty(-1);
+
+    public void checkIfAllPigeonsOnPosition() {
+        int count = command1.size() + command2.size() + command3.size();
+        if (count == getAllPigeons().size() - 3) {
+            // -3 капітани
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Інформація");
+            alert.setContentText(null);
+
+            if (command1.size() > command2.size() && command1.size() > command3.size()) {
+                alert.setHeaderText("Команда 1 перемогла!");
+            } else if (command2.size() > command1.size() && command2.size() > command3.size()) {
+                alert.setHeaderText("Команда 2 перемогла!");
+            } else if (command3.size() > command2.size() && command3.size() > command1.size()) {
+                alert.setHeaderText("Команда 3 перемогла!");
+            } else {
+                alert.setHeaderText("Переможця нема!");
+            }
+
+            isPaused = true;
+            alert.show();
+            alert.setOnCloseRequest(dialogEvent -> isPaused = false);
+        }
+    }
 
     {
         freePigeons = new ArrayList<>();
@@ -336,12 +363,14 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
     }
 
     private void onMouseClickedOnPigeon(Pigeon pigeon) {
-        if (pigeon.isSelected()) {
-            selectManager.remove(pigeon);
-            pigeon.setSelected(false);
-        } else {
-            selectManager.add(pigeon);
-            pigeon.setSelected(true);
+        if (!pigeon.isOnPosition()) {
+            if (pigeon.isSelected()) {
+                selectManager.remove(pigeon);
+                pigeon.setSelected(false);
+            } else {
+                selectManager.add(pigeon);
+                pigeon.setSelected(true);
+            }
         }
     }
 

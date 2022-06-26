@@ -14,6 +14,11 @@ public class WhitePigeon extends Pigeon implements Visualizable, Cloneable {
         attachedToMailBox = false;
     }
 
+    public void setCapitan(boolean capitan) {
+        super.setCapitan(capitan);
+        setName("КАПІТАН 2");
+    }
+
     public WhitePigeon() {
         super();
     }
