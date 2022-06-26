@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -459,14 +460,11 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             case A -> {
                 if (keyEvent.isControlDown()) selectAll();
             }
-            case K -> {
-                chooseCapitan();
-            }
+            case K -> chooseCapitan();
         }
     }
 
     private void chooseCapitan() {
-
         List<Pigeon> allPigeons = new ArrayList<>();
         List<WhitePigeon> allWhitePigeons = new ArrayList<>();
         List<PostPigeon> allPostPigeons = new ArrayList<>();
@@ -493,10 +491,24 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
         list3.setItems(FXCollections.observableList(allPostPigeons));
         list3.setPrefWidth(300);
 
+        Label caption1 = new Label("Перший");
+        caption1.setFont(new Font(16));
+        caption1.setPadding(new Insets(0, 0, 10, 0));
+
+        Label caption2 = new Label("Другий");
+        caption2.setFont(new Font(16));
+        caption2.setPadding(new Insets(0, 0, 10, 0));
+
+        Label caption3 = new Label("Третій");
+        caption3.setFont(new Font(16));
+        caption3.setPadding(new Insets(0, 0, 10, 0));
+
+
         Stage stage = new Stage();
 
         final int[] indexes = {-1, -1, -1};
         Button okButton = new Button("OK");
+        okButton.setPrefWidth(60);
         okButton.setOnAction(actionEvent -> {
             indexes[0] = list1.getSelectionModel().getSelectedIndex();
             indexes[1] = list2.getSelectionModel().getSelectedIndex();
@@ -504,15 +516,22 @@ public class Universal implements EventHandler<KeyEvent>, Visualizable {
             stage.close();
         });
         Button cancelButton = new Button("Cancel");
+        cancelButton.setPrefWidth(60);
         cancelButton.setOnAction(actionEvent -> stage.close());
 
-        HBox lists = new HBox(list1, list2, list3);
+        HBox lists = new HBox(
+                new VBox(caption1, list1),
+                new VBox(caption2, list2),
+                new VBox(caption3, list3)
+        );
         HBox buttons = new HBox(okButton, cancelButton);
+        buttons.setPadding(new Insets(20, 0, 0, 0));
         VBox root = new VBox(lists, buttons);
+        root.setPadding(new Insets(20));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Choose capitans");
+        stage.setTitle("Оберіть трьох капітанів");
 
         isPaused = true;
         stage.showAndWait();

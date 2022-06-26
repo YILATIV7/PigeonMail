@@ -42,11 +42,11 @@ public class PostPigeon extends WhitePigeon implements Visualizable, Cloneable {
     @Override
     public String toString() {
         return "PostPigeon{" +
-                "x=" + getX() +
-                ", y=" + getY() +
-                ", moveVector=" + getMoveVector() +
+                "name='" + getName() + '\'' +
+                ", x=" + Math.round(getX()) +
+                ", y=" + Math.round(getY()) +
                 ", moveType=" + getMoveType() +
-                ", name='" + getName() + '\'' +
+                ", moveVector=" + getMoveVector() +
                 '}';
     }
 

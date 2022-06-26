@@ -357,11 +357,11 @@ public class Pigeon implements Comparable<Pigeon>, Visualizable, Cloneable, Seri
     @Override
     public String toString() {
         return "Pigeon{" +
-                "x=" + x +
-                ", y=" + y +
-                ", moveVector=" + moveVector +
+                "name='" + name + '\'' +
+                ", x=" + Math.round(x) +
+                ", y=" + Math.round(y) +
                 ", moveType=" + moveType +
-                ", name='" + name + '\'' +
+                ", moveVector=" + moveVector +
                 '}';
     }
 

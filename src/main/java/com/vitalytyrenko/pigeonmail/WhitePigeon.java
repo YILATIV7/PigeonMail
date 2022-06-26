@@ -100,11 +100,11 @@ public class WhitePigeon extends Pigeon implements Visualizable, Cloneable {
     @Override
     public String toString() {
         return "WhitePigeon{" +
-                "x=" + getX() +
-                ", y=" + getY() +
-                ", moveVector=" + getMoveVector() +
+                "name='" + getName() + '\'' +
+                ", x=" + Math.round(getX()) +
+                ", y=" + Math.round(getY()) +
                 ", moveType=" + getMoveType() +
-                ", name='" + getName() + '\'' +
+                ", moveVector=" + getMoveVector() +
                 '}';
     }
 
